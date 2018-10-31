@@ -32,10 +32,10 @@ import java.util.HashMap;
 
 public class Activity2 extends Activity {
 
-    private static final String FILE_NAME = "example.txt";
     EditText mEditText;
     private DatabaseReference mDatabase;
     private String key;
+    private String image_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,6 @@ public class Activity2 extends Activity {
         setContentView(R.layout.activity_2);
         mEditText = findViewById(R.id.edit_text);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        key = mDatabase.child("products").push().getKey();
     }
 
     public void save(View v){
@@ -68,41 +67,13 @@ public class Activity2 extends Activity {
                 Elements product_name = doc.getElementsByClass("product-name");
                 Elements product_brand = doc.getElementsByClass("product-brand");
                 Elements product_price = doc.getElementsByClass("product-price");
-                System.out.println("BEFORE:::::");
-                //Elements image = doc.select("img.product-detail.lazyloaded");
-                //System.out.println("image_text : " + image.text());
                 Elements imageElements = doc.getElementsByTag("img");
-                int count = 1;
-                String url = "";
-                for (Element element : imageElements) {
-                    System.out.println("src: "+element.attr("data-srcset"));
 
-                    System.out.println("title: "+element.attr("alt"));
-                    System.out.println("count: " + count);
-                    if(count == 2) {
-                        url = element.attr("data-srcset");
-                    }
-                    count++;
-
-                }
-                msg =   product_brand.text() + "'s " + product_name.text() + " stored." ;
-
-                HashMap<String, String> dataMap = new HashMap<String, String>();
-                dataMap.put("link", website);
-                dataMap.put("product_name", product_name.text());
-                dataMap.put("product_brand", product_brand.text());
-                dataMap.put("current_price", product_price.text());
-//                dataMap.put("previous_price", )
-
-//                mDatabase.child(product_name.text()).child("product_brand").setValue(product_brand.text());
-//                mDatabase.child(product_name.text()).child("current_price").setValue(product_price.text());
-                Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), url);
+                image_url = imageElements.get(1).attr("data-srcset");
+                key = product_brand.text() + product_name.text();
+                Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
                 mDatabase.child("products").child(key).setValue(prod);
                 mEditText.getText().clear();
-
-
-
-
             }catch(Exception e){
                 e.printStackTrace();
             }

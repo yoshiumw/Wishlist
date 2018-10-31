@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.appwidget.AppWidgetHost;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -35,9 +36,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-
+import static java.lang.StrictMath.abs;
 
 
 public class MainActivity extends Activity {
@@ -83,9 +85,62 @@ public class MainActivity extends Activity {
 
             @Override
             protected void onBindViewHolder(@NonNull ProductHolder holder, int position, @NonNull Product model) {
-                holder.setAll(model.getBrand(), model.getName(), model.getPrice());
-                holder.setImage(model.getUrl());
-                Log.e(TAG, model.getPrice());
+
+
+                int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                if (SDK_INT > 8)
+                {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                            .permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    String website = model.getLink();
+                    String final_price;
+
+                    System.out.println("Before try : " + website);
+                    try {
+                        System.out.println("before jsoup connect");
+                        Document doc = Jsoup.connect(website).get();
+                        System.out.println("before product_price");
+                        Elements product_price = doc.getElementsByClass("product-price");
+                        int curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" ")));
+                        //int curr_price = Integer.parseInt(product_price.text().replaceAll("(^|\\\\s)([0-9]+)($|\\\\s)", ""));
+                        //int prev_price = Integer.parseInt(model.getPrice().replaceAll("(^|\\\\s)([0-9]+)($|\\\\s)+", ""));
+                        int prev_price =  Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" ")));
+                        int diff = prev_price - curr_price;
+                        if (curr_price < prev_price){
+                            System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
+                            final_price = "$" + curr_price + " CAD";
+                            Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
+                            mDatabase.child("products").child(model.getBrand() + model.getName()).setValue(prod);
+
+                        } else if (curr_price > prev_price){
+                            System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
+                            final_price = "$" + curr_price + " CAD";
+                            Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
+                            mDatabase.child("products").child(model.getBrand() + model.getName()).setValue(prod);
+                        } else {
+                            final_price = "$" + curr_price + " CAD";
+                        }
+
+                        if(model.getPrice_diff() > 0)
+                            final_price += " (+" + model.getPrice_diff() + ")";
+                        else if (model.getPrice_diff() < 0)
+                            final_price += " (-" + model.getPrice_diff() + ")";
+                        String t = String.valueOf(diff);
+                        System.out.println("ERROR HERE");
+                        holder.setAll(model.getBrand(), model.getName(), final_price, t);
+                        System.out.println("ERROR HERE 2");
+                        holder.setImage(model.getUrl());
+                        System.out.println("ERROR HERE 3");
+                        Log.e(TAG, model.getPrice());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
             }
 
 
