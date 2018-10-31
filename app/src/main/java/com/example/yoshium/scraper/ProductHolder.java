@@ -40,12 +40,13 @@ public class ProductHolder extends RecyclerView.ViewHolder {
         price.setText(p);
 
 
-        if (d.charAt(0) == '-'){
+        if (d.charAt(1) == '-'){
             diff.setTextColor(0xFF32CD32);
-        } else if (d.charAt(0) == '+'){
+        } else if (d.charAt(1) == '+'){
           diff.setTextColor(0xFFFF0000);
         } else if (d.charAt(0) == '0'){
             d = " ";
+            System.out.println("%zero");
         }
 
         diff.setText(d);

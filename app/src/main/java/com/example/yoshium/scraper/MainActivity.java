@@ -122,18 +122,22 @@ public class MainActivity extends Activity {
                         } else {
                             final_price = "$" + curr_price + " CAD";
                         }
-                        String t = "";
+                        int percentage = (int) 100.0 * model.getPrice_diff() / curr_price;
+                        System.out.println("%: " + model.getPrice_diff() + "/" + curr_price + "=" + percentage);
+                        String t = "0";
+
                         if(model.getPrice_diff() > 0)
-                            t = "+" + model.getPrice_diff();
+                            t = "(+" + percentage + "%)";
                         else if (model.getPrice_diff() < 0)
-                            t = "-" + model.getPrice_diff();
-                        else if (model.getPrice_diff() == 0){
-                            t = "" + model.getPrice_diff();
-                        }
+                            t = "(" + percentage + "%)";
+                        else
+                            t = "000";
+
+                        Log.e(TAG, t);
 
                         holder.setAll(model.getBrand(), model.getName(), final_price, t);
                         holder.setImage(model.getUrl());
-                        Log.e(TAG, model.getPrice());
+                        //Log.e(TAG, model.getPrice());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
