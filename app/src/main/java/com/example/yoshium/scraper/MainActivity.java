@@ -122,17 +122,17 @@ public class MainActivity extends Activity {
                         } else {
                             final_price = "$" + curr_price + " CAD";
                         }
-
+                        String t = "";
                         if(model.getPrice_diff() > 0)
-                            final_price += " (+" + model.getPrice_diff() + ")";
+                            t = "+" + model.getPrice_diff();
                         else if (model.getPrice_diff() < 0)
-                            final_price += " (-" + model.getPrice_diff() + ")";
-                        String t = String.valueOf(diff);
-                        System.out.println("ERROR HERE");
+                            t = "-" + model.getPrice_diff();
+                        else if (model.getPrice_diff() == 0){
+                            t = "" + model.getPrice_diff();
+                        }
+
                         holder.setAll(model.getBrand(), model.getName(), final_price, t);
-                        System.out.println("ERROR HERE 2");
                         holder.setImage(model.getUrl());
-                        System.out.println("ERROR HERE 3");
                         Log.e(TAG, model.getPrice());
                     } catch (IOException e) {
                         e.printStackTrace();

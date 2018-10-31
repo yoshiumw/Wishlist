@@ -29,18 +29,4 @@
         android:text="Submit" />
 
 
-    <Button
-        android:id="@+id/button_load"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="168dp"
-        android:layout_marginLeft="168dp"
-        android:layout_marginTop="415dp"
-        android:onClick="load"
-        android:text="Load" />
-
 </RelativeLayout>

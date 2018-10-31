@@ -2,6 +2,7 @@ package com.example.yoshium.scraper;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -47,14 +48,12 @@ public class Activity2 extends Activity {
     }
 
     public void save(View v){
+
         new doit().execute();
+        Intent intent = new Intent(Activity2.this, MainActivity.class);
+        startActivity(intent);
     }
 
-    public void load(View v){
-
-            String text;
-
-    }
 
     public class doit extends AsyncTask<Void, Void, Void> {
         String msg;
@@ -74,6 +73,7 @@ public class Activity2 extends Activity {
                 Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
                 mDatabase.child("products").child(key).setValue(prod);
                 mEditText.getText().clear();
+
             }catch(Exception e){
                 e.printStackTrace();
             }

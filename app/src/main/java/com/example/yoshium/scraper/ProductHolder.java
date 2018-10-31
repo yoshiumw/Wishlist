@@ -38,7 +38,18 @@ public class ProductHolder extends RecyclerView.ViewHolder {
         brand.setText(b);
         name.setText(n);
         price.setText(p);
+
+
+        if (d.charAt(0) == '-'){
+            diff.setTextColor(0xFF32CD32);
+        } else if (d.charAt(0) == '+'){
+          diff.setTextColor(0xFFFF0000);
+        } else if (d.charAt(0) == '0'){
+            d = " ";
+        }
+
         diff.setText(d);
+
     }
 
     public void setBrand(String t){
