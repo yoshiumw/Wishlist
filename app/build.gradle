@@ -41,4 +41,6 @@ dependencies {
     // FirebaseUI for Cloud Storage
     implementation 'com.firebaseui:firebase-ui-storage:4.2.1'
 
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+
 }
