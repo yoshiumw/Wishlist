@@ -2,8 +2,13 @@
 <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" android:id="@+id/parentLayout">
 
+    <TextView
+        android:id = "@+id/text_link"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        />
 
     <TextView
         android:id="@+id/text_name"

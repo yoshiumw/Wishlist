@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -94,14 +95,14 @@ public class MainActivity extends Activity {
                             .permitAll().build();
                     StrictMode.setThreadPolicy(policy);
 
-                    String website = model.getLink();
+                    final String website = model.getLink();
                     String final_price;
 
                     System.out.println("Before try : " + website);
                     try {
-                        System.out.println("before jsoup connect");
+                        //System.out.println("before jsoup connect");
                         Document doc = Jsoup.connect(website).get();
-                        System.out.println("before product_price");
+                        //System.out.println("before product_price");
                         Elements product_price = doc.getElementsByClass("product-price");
                         int curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" ")));
                         //int curr_price = Integer.parseInt(product_price.text().replaceAll("(^|\\\\s)([0-9]+)($|\\\\s)", ""));
@@ -135,12 +136,15 @@ public class MainActivity extends Activity {
 
                         Log.e(TAG, t);
 
-                        holder.setAll(model.getBrand(), model.getName(), final_price, t);
+                        holder.setAll(model.getBrand(), model.getName(), final_price, t, website);
                         holder.setImage(model.getUrl());
+
+
                         //Log.e(TAG, model.getPrice());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
 
 
                 }
