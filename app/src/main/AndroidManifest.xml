@@ -12,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         android:theme="@style/Theme.AppCompat.NoActionBar"
-        <activity android:name=".MainActivity">
+        <activity android:name=".logIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".second" />
         <activity android:name=".Activity2"></activity>
     </application>

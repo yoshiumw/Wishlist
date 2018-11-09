@@ -37,6 +37,7 @@ public class Activity2 extends Activity {
     private DatabaseReference mDatabase;
     private String key;
     private String image_url;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class Activity2 extends Activity {
         setContentView(R.layout.activity_2);
         mEditText = findViewById(R.id.edit_text);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        id = getIntent().getStringExtra("ID");
     }
 
     public void save(View v){
@@ -71,7 +74,7 @@ public class Activity2 extends Activity {
                 image_url = imageElements.get(1).attr("data-srcset");
                 key = product_brand.text() + product_name.text();
                 Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
-                mDatabase.child("products").child(key).setValue(prod);
+                mDatabase.child(id).child(key).setValue(prod);
                 mEditText.getText().clear();
 
             }catch(Exception e){

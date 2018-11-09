@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,10 +51,20 @@ public class MainActivity extends Activity {
     private ProductHolder productHolder;
     FirebaseRecyclerAdapter adapter;
 
+
+    String googId;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        googId = account.getId();
+        System.out.println("GOOGID" + googId);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -65,7 +77,7 @@ public class MainActivity extends Activity {
 
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("products");
+                .child(googId);
 
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
@@ -98,7 +110,7 @@ public class MainActivity extends Activity {
                     final String website = model.getLink();
                     String final_price;
 
-                    System.out.println("Before try : " + website);
+                    //System.out.println("Before try : " + website);
                     try {
                         //System.out.println("before jsoup connect");
                         Document doc = Jsoup.connect(website).get();
@@ -113,14 +125,17 @@ public class MainActivity extends Activity {
                             System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
                             final_price = "$" + curr_price + " CAD";
                             Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
-                            mDatabase.child("products").child(model.getBrand() + model.getName()).setValue(prod);
+                            System.out.println("GOOGID" + googId);
+                            mDatabase.child(googId).child(model.getBrand() + model.getName()).setValue(prod);
 
                         } else if (curr_price > prev_price){
                             System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
                             final_price = "$" + curr_price + " CAD";
                             Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
-                            mDatabase.child("products").child(model.getBrand() + model.getName()).setValue(prod);
+                            System.out.println("GOOGID" + googId);
+                            mDatabase.child(googId).child(model.getBrand() + model.getName()).setValue(prod);
                         } else {
+                            System.out.println("GOOGID" + googId);
                             final_price = "$" + curr_price + " CAD";
                         }
                         int percentage = (int) 100.0 * model.getPrice_diff() / curr_price;
@@ -170,6 +185,7 @@ public class MainActivity extends Activity {
     {
 
         Intent intent = new Intent(MainActivity.this, Activity2.class);
+        intent.putExtra("ID", googId);
         startActivity(intent);
 
 
