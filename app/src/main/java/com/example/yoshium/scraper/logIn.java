@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -31,10 +34,12 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class logIn extends Activity {
 
     private static final int RC_SIGN_IN = 101;
-
+    private ImageView mImageView;
     GoogleSignInClient mGoogleSignInClient;
-
-    SignInButton signInButton;
+    private EditText mEmailField;
+    private EditText mPasswordField;
+    private SignInButton signInButton;
+    private Button registerBtn;
 
     FirebaseAuth auth;
 
@@ -45,8 +50,21 @@ public class logIn extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.log_in);
 
+        mEmailField = (EditText) findViewById(R.id.loginEmail);
+        mPasswordField = (EditText) findViewById(R.id.loginPass);
+
+        mImageView = (ImageView) findViewById(R.id.stealSeekers);
+        mImageView.setImageResource(R.drawable.stealseekers);
+        registerBtn = findViewById(R.id.registerButton);
         auth = FirebaseAuth.getInstance();
 
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(logIn.this, signUp.class);
+                startActivity(intent);
+            }
+        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -70,6 +88,7 @@ public class logIn extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        FirebaseUser currentUser = auth.getCurrentUser();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
@@ -85,9 +104,6 @@ public class logIn extends Activity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-
-                // ...
             }
         }
     }
@@ -122,14 +138,37 @@ public class logIn extends Activity {
             String id = account.getId();
             intent.putExtra("ID", id);
             startActivity(intent);
-            // Signed in successfully, show authenticated UI.
 
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("login", "signInResult:failed code=" + e.getStatusCode());
 
         }
     }
 
+    public void completeLogin(View view){
+        String email = mEmailField.getText().toString();
+        String password = mPasswordField.getText().toString();
+
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("login.java", "signInWithEmail:success");
+                            FirebaseUser user = auth.getCurrentUser();
+                            Intent intent = new Intent(logIn.this, MainActivity.class);
+                            startActivity(intent);
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("login.java", "signInWithEmail:failure", task.getException());
+                            Toast.makeText(logIn.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
 }

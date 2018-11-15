@@ -3,6 +3,8 @@
     package="com.example.yoshium.scraper">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -21,7 +23,9 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".second" />
+        <activity android:name = ".signUp"/>
         <activity android:name=".Activity2"></activity>
+
     </application>
 
 </manifest>

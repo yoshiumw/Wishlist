@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,4 +11,58 @@
         android:layout_height="wrap_content"
         android:id="@+id/googleBtn">
     </com.google.android.gms.common.SignInButton>
+
+    <ImageView
+        android:id="@+id/stealSeekers"
+        android:layout_width="365dp"
+        android:layout_height="182dp"
+        android:layout_alignStart="@+id/googleBtn"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="98dp"
+        app:srcCompat="@drawable/stealseekers" />
+
+    <EditText
+        android:id="@+id/loginEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stealSeekers"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Your email address."
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/loginPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginEmail"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Your password."
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginPass"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:text="Log-in"
+        android:onClick="completeLogin"/>
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:text="Don't have an account? Register!"
+        />
+
+
+
+
 </RelativeLayout>

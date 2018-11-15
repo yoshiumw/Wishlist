@@ -8,16 +8,14 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginTop="1dp"
-        android:layout_marginEnd="323dp"
-        android:layout_marginRight="323dp"
         android:onClick="sendMessage"
-        android:text="button" />
+        android:text="Add Item" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -27,6 +27,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,20 +52,31 @@ public class MainActivity extends Activity {
     private ListView mList;
     private ProductHolder productHolder;
     FirebaseRecyclerAdapter adapter;
-
+    private FirebaseAuth mAuth;
 
     String googId;
+    String uid;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        String uID = currentUser.getUid();
+//        System.out.println("CURRENT USER" + uID);
+//
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        googId = account.getId();
+//        System.out.println("GOOGID" + googId);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+            System.out.println("USERID" + uid);
+        }
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        googId = account.getId();
-        System.out.println("GOOGID" + googId);
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -77,7 +90,7 @@ public class MainActivity extends Activity {
 
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child(googId);
+                .child(uid);
 
         FirebaseRecyclerOptions<Product> options =
                 new FirebaseRecyclerOptions.Builder<Product>()
@@ -126,14 +139,14 @@ public class MainActivity extends Activity {
                             final_price = "$" + curr_price + " CAD";
                             Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
                             System.out.println("GOOGID" + googId);
-                            mDatabase.child(googId).child(model.getBrand() + model.getName()).setValue(prod);
+                            mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
 
                         } else if (curr_price > prev_price){
                             System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
                             final_price = "$" + curr_price + " CAD";
                             Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
                             System.out.println("GOOGID" + googId);
-                            mDatabase.child(googId).child(model.getBrand() + model.getName()).setValue(prod);
+                            mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
                         } else {
                             System.out.println("GOOGID" + googId);
                             final_price = "$" + curr_price + " CAD";
@@ -190,6 +203,11 @@ public class MainActivity extends Activity {
 
 
 
+    }
+    @Override
+    public void onBackPressed() {
+
+        return;
     }
 }
 
