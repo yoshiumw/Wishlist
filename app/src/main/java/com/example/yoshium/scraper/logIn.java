@@ -149,26 +149,30 @@ public class logIn extends Activity {
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("login.java", "signInWithEmail:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                            Intent intent = new Intent(logIn.this, MainActivity.class);
-                            startActivity(intent);
+        if (email.length() !=0 || password.length() != 0) {
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("login.java", "signInWithEmail:success");
+                                FirebaseUser user = auth.getCurrentUser();
+                                Intent intent = new Intent(logIn.this, MainActivity.class);
+                                startActivity(intent);
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("login.java", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(logIn.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("login.java", "signInWithEmail:failure", task.getException());
+                                Toast.makeText(logIn.this, "Authentication failed, incorrect email or password.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            // ...
                         }
-
-                        // ...
-                    }
-                });
+                    });
+        } else {
+            Toast.makeText(logIn.this, "Please input your email or password!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

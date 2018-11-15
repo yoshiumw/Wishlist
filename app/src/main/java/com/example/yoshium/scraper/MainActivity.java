@@ -42,6 +42,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static java.lang.StrictMath.abs;
@@ -61,15 +62,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-
-//        mAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        String uID = currentUser.getUid();
-//        System.out.println("CURRENT USER" + uID);
-//
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        googId = account.getId();
-//        System.out.println("GOOGID" + googId);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -121,36 +113,65 @@ public class MainActivity extends Activity {
                     StrictMode.setThreadPolicy(policy);
 
                     final String website = model.getLink();
-                    String final_price;
+                    String final_price = "";
 
                     //System.out.println("Before try : " + website);
                     try {
                         //System.out.println("before jsoup connect");
                         Document doc = Jsoup.connect(website).get();
-                        //System.out.println("before product_price");
-                        Elements product_price = doc.getElementsByClass("product-price");
-                        int curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" ")));
-                        //int curr_price = Integer.parseInt(product_price.text().replaceAll("(^|\\\\s)([0-9]+)($|\\\\s)", ""));
-                        //int prev_price = Integer.parseInt(model.getPrice().replaceAll("(^|\\\\s)([0-9]+)($|\\\\s)+", ""));
-                        int prev_price =  Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" ")));
+                        URL parseUrl = new URL(website);
+                        int curr_price = 0;
+                        int prev_price = 0;
+
+                        //SSENSE
+                        if (parseUrl.getHost().equals("www.ssense.com")) {
+                            Elements product_price = doc.getElementsByClass("product-price");
+                            curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" "))); //Price from scraping
+                            prev_price =  Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
+                        }
+
+                        if (parseUrl.getHost().equals("www.grailed.com")) {
+                            Elements product_price = doc.getElementsByClass("sub-title price");
+                            String parsePrice = product_price.text().replaceAll("[,]", "");
+                            System.out.println("PARSE PRICE " + parsePrice);
+                            curr_price = Integer.parseInt(parsePrice.substring(1, parsePrice.length())); //Price from scraping
+                            prev_price =  Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
+                        }
+
                         int diff = prev_price - curr_price;
                         if (curr_price < prev_price){
                             System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
-                            final_price = "$" + curr_price + " CAD";
+                            if (parseUrl.getHost().equals("www.ssense.com")) {
+                                final_price = "$" + curr_price + " CAD";
+                            }
+                            if (parseUrl.getHost().equals("www.grailed.com")){
+                                final_price = "$" + curr_price + " USD";
+                            }
                             Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
-                            System.out.println("GOOGID" + googId);
+                            //System.out.println("GOOGID" + googId);
                             mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
 
                         } else if (curr_price > prev_price){
                             System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
-                            final_price = "$" + curr_price + " CAD";
+                            if (parseUrl.getHost().equals("www.ssense.com")) {
+                                final_price = "$" + curr_price + " CAD";
+                            }
+                            if (parseUrl.getHost().equals("www.grailed.com")){
+                                final_price = "$" + curr_price + " USD";
+                            }
                             Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
-                            System.out.println("GOOGID" + googId);
+                            //System.out.println("GOOGID" + googId);
                             mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
                         } else {
-                            System.out.println("GOOGID" + googId);
-                            final_price = "$" + curr_price + " CAD";
+                            //System.out.println("GOOGID" + googId);
+                            if (parseUrl.getHost().equals("www.ssense.com")) {
+                                final_price = "$" + curr_price + " CAD";
+                            }
+                            if (parseUrl.getHost().equals("www.grailed.com")){
+                                final_price = "$" + curr_price + " USD";
+                            }
                         }
+
                         int percentage = (int) 100.0 * model.getPrice_diff() / curr_price;
                         System.out.println("%: " + model.getPrice_diff() + "/" + curr_price + "=" + percentage);
                         String t = "0";
@@ -198,7 +219,7 @@ public class MainActivity extends Activity {
     {
 
         Intent intent = new Intent(MainActivity.this, Activity2.class);
-        intent.putExtra("ID", googId);
+        intent.putExtra("ID", uid);
         startActivity(intent);
 
 

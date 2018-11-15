@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 
 public class Activity2 extends Activity {
@@ -66,16 +67,45 @@ public class Activity2 extends Activity {
             website = mEditText.getText().toString();
             try {
                 Document doc = Jsoup.connect(website).get();
-                Elements product_name = doc.getElementsByClass("product-name");
-                Elements product_brand = doc.getElementsByClass("product-brand");
-                Elements product_price = doc.getElementsByClass("product-price");
-                Elements imageElements = doc.getElementsByTag("img");
+                URL parseUrl = new URL(website);
 
-                image_url = imageElements.get(1).attr("data-srcset");
-                key = product_brand.text() + product_name.text();
-                Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
-                mDatabase.child(id).child(key).setValue(prod);
-                mEditText.getText().clear();
+                Elements product_name;
+                Elements product_brand;
+                Elements product_price;
+                Elements imageElements;
+
+                //SSENSE
+                if (parseUrl.getHost().equals("www.ssense.com")) {
+                    product_name = doc.getElementsByClass("product-name");
+                    product_brand = doc.getElementsByClass("product-brand");
+                    product_price = doc.getElementsByClass("product-price");
+                    imageElements = doc.getElementsByTag("img");
+                    image_url = imageElements.get(1).attr("data-srcset");
+
+                    key = product_brand.text() + product_name.text();
+
+                    Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
+                    mDatabase.child(id).child(key).setValue(prod);
+                    mEditText.getText().clear();
+                }
+
+                //GRAILED
+                if (parseUrl.getHost().equals("www.grailed.com")) {
+                    product_name = doc.getElementsByClass("listing-title sub-title");
+                    product_brand = doc.getElementsByClass("designer jumbo");
+                    product_price = doc.getElementsByClass("sub-title price");
+                    String parsePrice = product_price.text().replaceAll("[,]", "");
+                    imageElements = doc.getElementsByTag("img");
+                    image_url = imageElements.get(0).attr("src");
+                    System.out.println("IMAGEURL" + image_url);
+
+                    key = product_brand.text() + product_name.text();
+
+                    Product prod = new Product(product_name.text(), product_brand.text(),(parsePrice + " USD"), image_url, website, 0);
+                    mDatabase.child(id).child(key).setValue(prod);
+                    mEditText.getText().clear();
+                }
+
 
             }catch(Exception e){
                 e.printStackTrace();
