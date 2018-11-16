@@ -15,7 +15,7 @@
         android:layout_alignStart="@+id/googleBtn"
         android:layout_marginStart="1dp"
         android:paddingTop="10dp"
-        android:text="Password"
+        android:text="@string/passTextView"
         android:textColor="#ffff"
         android:layout_alignLeft="@+id/googleBtn"
         android:layout_marginLeft="1dp" />
@@ -37,7 +37,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        app:srcCompat="@drawable/stealseekers_white" />
+        app:srcCompat="@drawable/stealseekers_white"
+        />
 
     <EditText
         android:id="@+id/loginEmail"
@@ -48,7 +49,9 @@
         android:ems="10"
         android:textColor="#ffffff"
         android:inputType="textEmailAddress"
-        android:backgroundTint="#ffff"/>
+        android:backgroundTint="#ffff"
+        android:hint="@string/emailTextView"
+        android:textColorHint="#ffff"/>
 
     <EditText
         android:id="@+id/loginPass"
@@ -61,7 +64,9 @@
         android:textColor="#ffff"
         android:inputType="textPassword"
         android:backgroundTint="#ffff"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:hint="@string/passTextView"
+        android:textColorHint="#ffff"/>
 
     <Button
         android:id="@+id/loginButton"
@@ -70,7 +75,7 @@
         android:layout_below="@+id/loginPass"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:text="Log-in"
+        android:text="@string/loginBtn"
         android:background="@drawable/rounded_corners"
         android:alpha="100"
         android:onClick="completeLogin"
@@ -85,7 +90,7 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:layout_alignParentStart="true"
-        android:text="Don't have an account? Register!"
+        android:text="@string/registerBtn"
         android:textColor="#ffff"
         android:layout_alignParentLeft="true" />
 
@@ -96,7 +101,7 @@
         android:layout_below="@+id/stealSeekers"
         android:layout_alignStart="@+id/googleBtn"
         android:layout_marginTop="10dp"
-        android:text="E-Mail"
+        android:text="@string/emailTextView"
         android:textColor="#ffff"
         android:layout_alignLeft="@+id/googleBtn" />
 
@@ -109,7 +114,7 @@
         android:layout_below="@+id/registerButton"
         android:layout_above="@+id/googleBtn"
         android:gravity="center"
-        android:text="--------------------  OR  --------------------"
+        android:text="@string/orTextView"
         android:textColor="#ffff"
         android:textSize="20dp"/>
 

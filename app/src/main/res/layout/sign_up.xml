@@ -14,7 +14,8 @@
         android:layout_marginTop="175dp"
         android:ems="10"
         android:hint="Ex. johndoe@example.com"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:layout_alignParentLeft="true" />
 
     <EditText
         android:id="@+id/regPass"
@@ -26,7 +27,9 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPassword"
-        tools:hint="Ex. 123abc" />
+        tools:hint="Ex. 123abc"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:id="@+id/finishReg"
@@ -36,7 +39,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
         android:text="Complete Registration"
-        android:onClick = "register"/>
+        android:onClick = "register"
+        android:layout_alignParentLeft="true" />
 
 
 </RelativeLayout>

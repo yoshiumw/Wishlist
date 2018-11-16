@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">scraper</string>
+    <string name="app_name">Steal Seekers</string>
+    <string name="emailTextView">E-Mail</string>
+    <string name="passTextView">Password</string>
+    <string name="loginBtn">Log-in</string>
+    <string name="registerBtn">Don\'t have an account? Register!</string>
+    <string name="orTextView">--------------------          OR          --------------------</string>
 </resources>
