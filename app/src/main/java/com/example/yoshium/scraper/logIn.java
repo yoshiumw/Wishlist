@@ -54,7 +54,7 @@ public class logIn extends Activity {
         mPasswordField = (EditText) findViewById(R.id.loginPass);
 
         mImageView = (ImageView) findViewById(R.id.stealSeekers);
-        mImageView.setImageResource(R.drawable.logo_white);
+        mImageView.setImageResource(R.drawable.stealseekers_white);
         registerBtn = findViewById(R.id.registerButton);
         auth = FirebaseAuth.getInstance();
 
