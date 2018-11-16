@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@drawable/gradient">
+
+    <TextView
+        android:id="@+id/passTextView"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginEmail"
+        android:layout_alignStart="@+id/googleBtn"
+        android:layout_marginStart="1dp"
+        android:paddingTop="10dp"
+        android:text="@string/passTextView"
+        android:textColor="#ffff"
+        android:layout_alignLeft="@+id/googleBtn"
+        android:layout_marginLeft="1dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/loginButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/loginButton">
+
+    </com.google.android.gms.common.SignInButton>
+
+    <ImageView
+        android:id="@+id/stealSeekers"
+        android:layout_width="wrap_content"
+        android:layout_height="147dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:srcCompat="@drawable/stealseekers_white" />
+
+    <EditText
+        android:id="@+id/loginEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailTextView"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:textColor="#ffffff"
+        android:inputType="textEmailAddress"
+        android:backgroundTint="#ffff"/>
+
+    <EditText
+        android:id="@+id/loginPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:textColor="#ffff"
+        android:inputType="textPassword"
+        android:backgroundTint="#ffff"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginPass"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:text="Log-in"
+        android:background="@drawable/rounded_corners"
+        android:alpha="100"
+        android:onClick="completeLogin"
+        android:textColor="#43a047"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:layout_alignParentStart="true"
+        android:text="Don't have an account? Register!"
+        android:textColor="#ffff"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stealSeekers"
+        android:layout_alignStart="@+id/googleBtn"
+        android:layout_marginTop="10dp"
+        android:text="E-Mail"
+        android:textColor="#ffff"
+        android:layout_alignLeft="@+id/googleBtn" />
+
+    <TextView
+        android:id="@+id/orTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/registerButton"
+        android:layout_above="@+id/googleBtn"
+        android:gravity="center"
+        android:text="--------------------  OR  --------------------"
+        android:textColor="#ffff"
+        android:textSize="20dp"/>
+
+
+</RelativeLayout>
