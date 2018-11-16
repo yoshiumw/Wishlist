@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,27 +28,28 @@ public class signUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private ImageView mImageView;
     private Button mRegisterBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.sign_up);
 
         mAuth = FirebaseAuth.getInstance();
         mEmailField = (EditText) findViewById(R.id.regEmail);
         mPasswordField = (EditText) findViewById(R.id.regPass);
         mRegisterBtn = (Button) findViewById(R.id.finishReg);
+
+        mImageView = (ImageView) findViewById(R.id.reg_logo);
+        mImageView.setImageResource(R.drawable.stealseekers_green);
     }
 
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+    public void goBack(View view){
+        Intent intent = new Intent(signUp.this, logIn.class);
+        startActivity(intent);
     }
 
     public void register(View view)

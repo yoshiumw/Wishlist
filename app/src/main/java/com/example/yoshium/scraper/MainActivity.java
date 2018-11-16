@@ -224,6 +224,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getBaseContext(),
+                DividerItemDecoration.VERTICAL));
         mButton.setVisibility(View.VISIBLE);
 
 

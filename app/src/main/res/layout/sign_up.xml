@@ -3,44 +3,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Go back"
+        android:textColor="#ffff"
+        android:background="@android:color/transparent"
+        android:onClick = "goBack"
+        />
+
+
+
+    <TextView
+        android:id="@+id/passTextView"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/regEmail"
+        android:paddingTop="10dp"
+        android:text="@string/passTextView"
+        android:textColor="#000"
+        android:layout_marginLeft="30dp"
+        />
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="77dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reg_logo"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="30dp"
+        android:text="@string/emailTextView"
+        android:textColor="#000" />
+
+    <ImageView
+        android:id="@+id/reg_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="147dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/topBar"
+        app:srcCompat="@drawable/stealseekers_green"
+        />
 
     <EditText
         android:id="@+id/regEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="175dp"
+        android:layout_below="@id/emailTextView"
+        android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="Ex. johndoe@example.com"
+        android:hint=" "
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:inputType="textEmailAddress"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:backgroundTint="#000000"/>
 
     <EditText
         android:id="@+id/regPass"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/regEmail"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/passTextView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="textPassword"
         tools:hint="Ex. 123abc"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentLeft="true" />
+        android:backgroundTint="#000"/>
 
     <Button
         android:id="@+id/finishReg"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/regPass"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/green_rounded_corners"
         android:text="Complete Registration"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textColor="#ffff"
         android:onClick = "register"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rectangular_box"
+        android:layout_alignParentTop="true" />
 
 
 </RelativeLayout>
