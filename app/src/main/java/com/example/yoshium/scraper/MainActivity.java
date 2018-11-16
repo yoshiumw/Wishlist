@@ -37,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -55,7 +56,8 @@ public class MainActivity extends Activity {
     FirebaseRecyclerAdapter adapter;
     private FirebaseAuth mAuth;
 
-    String googId;
+    Connection.Response response = null;
+
     String uid;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,82 +117,100 @@ public class MainActivity extends Activity {
                     final String website = model.getLink();
                     String final_price = "";
 
-                    //System.out.println("Before try : " + website);
                     try {
-                        //System.out.println("before jsoup connect");
-                        Document doc = Jsoup.connect(website).get();
+                        response = Jsoup.connect(website)
+                                .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
+                                .execute();
+                        int statuscode = response.statusCode();
+                        System.out.println("STATUS CODE " + statuscode);
+                        Document doc = response.parse();
                         URL parseUrl = new URL(website);
+                        System.out.println("DOC TITLE" + doc.title());
                         int curr_price = 0;
                         int prev_price = 0;
 
-                        //SSENSE
-                        if (parseUrl.getHost().equals("www.ssense.com")) {
-                            Elements product_price = doc.getElementsByClass("product-price");
-                            curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" "))); //Price from scraping
-                            prev_price =  Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
-                        }
-
-                        if (parseUrl.getHost().equals("www.grailed.com")) {
-                            Elements product_price = doc.getElementsByClass("sub-title price");
-                            String parsePrice = product_price.text().replaceAll("[,]", "");
-                            System.out.println("PARSE PRICE " + parsePrice);
-                            curr_price = Integer.parseInt(parsePrice.substring(1, parsePrice.length())); //Price from scraping
-                            prev_price =  Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
-                        }
-
-                        int diff = prev_price - curr_price;
-                        if (curr_price < prev_price){
-                            System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
+                        if (doc.title().equals(model.getPage_title())) {
+                            System.out.println("TITLE MATCHES");
+                            //SSENSE
                             if (parseUrl.getHost().equals("www.ssense.com")) {
-                                final_price = "$" + curr_price + " CAD";
+                                Elements product_price = doc.getElementsByClass("product-price");
+                                curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" "))); //Price from scraping
+                                prev_price = Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
                             }
-                            if (parseUrl.getHost().equals("www.grailed.com")){
-                                final_price = "$" + curr_price + " USD";
-                            }
-                            Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
-                            //System.out.println("GOOGID" + googId);
-                            mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
 
-                        } else if (curr_price > prev_price){
-                            System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
-                            if (parseUrl.getHost().equals("www.ssense.com")) {
-                                final_price = "$" + curr_price + " CAD";
+                            if (parseUrl.getHost().equals("www.grailed.com")) {
+                                Elements product_price = doc.getElementsByClass("-price");
+
+                                String parsePrice = product_price.text();
+
+                                if (parsePrice.length() > 6) {
+                                    parsePrice = parsePrice.substring(0, parsePrice.indexOf(" "));
+                                    System.out.println("PARSE PRICE " + parsePrice);
+                                }
+
+                                parsePrice = parsePrice.replaceAll("[,]", "");
+
+                                curr_price = Integer.parseInt(parsePrice.substring(1, parsePrice.length())); //Price from scraping
+                                prev_price = Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
                             }
-                            if (parseUrl.getHost().equals("www.grailed.com")){
-                                final_price = "$" + curr_price + " USD";
+
+                            int diff = prev_price - curr_price;
+                            if (curr_price < prev_price) {
+                                System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
+                                if (parseUrl.getHost().equals("www.ssense.com")) {
+                                    final_price = "$" + curr_price + " CAD";
+                                }
+                                if (parseUrl.getHost().equals("www.grailed.com")) {
+                                    final_price = "$" + curr_price + " USD";
+                                }
+                                Product prod = new Product(model.getPage_title(), model.getName(), model.getBrand(), final_price, model.getUrl(), model.getLink(), diff);
+                                mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
+
+                            } else if (curr_price > prev_price) {
+                                System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
+                                if (parseUrl.getHost().equals("www.ssense.com")) {
+                                    final_price = "$" + curr_price + " CAD";
+                                }
+                                if (parseUrl.getHost().equals("www.grailed.com")) {
+                                    final_price = "$" + curr_price + " USD";
+                                }
+                                Product prod = new Product(model.getPage_title(), model.getName(), model.getBrand(), final_price, model.getUrl(), model.getLink(), diff);
+                                //System.out.println("GOOGID" + googId);
+                                mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
+                            } else {
+                                //System.out.println("GOOGID" + googId);
+                                if (parseUrl.getHost().equals("www.ssense.com")) {
+                                    final_price = "$" + curr_price + " CAD";
+                                }
+                                if (parseUrl.getHost().equals("www.grailed.com")) {
+                                    final_price = "$" + curr_price + " USD";
+                                }
                             }
-                            Product prod = new Product(model.getName(), model.getBrand() , final_price, model.getUrl(), model.getLink(), diff);
-                            //System.out.println("GOOGID" + googId);
-                            mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
+
+                            int percentage = (int) 100.0 * model.getPrice_diff() / curr_price;
+                            System.out.println("%: " + model.getPrice_diff() + "/" + curr_price + "=" + percentage);
+                            String t = "0";
+
+                            if (model.getPrice_diff() > 0)
+                                t = "(+" + percentage + "%)";
+                            else if (model.getPrice_diff() < 0)
+                                t = "(" + percentage + "%)";
+                            else
+                                t = "000";
+
+                            Log.e(TAG, t);
+
+                            holder.setAll(model.getBrand(), model.getName(), final_price, t, website);
+                            holder.setImage(model.getUrl());
                         } else {
-                            //System.out.println("GOOGID" + googId);
-                            if (parseUrl.getHost().equals("www.ssense.com")) {
-                                final_price = "$" + curr_price + " CAD";
-                            }
-                            if (parseUrl.getHost().equals("www.grailed.com")){
-                                final_price = "$" + curr_price + " USD";
-                            }
+                            System.out.println("PRODUCT DOES NOT EXIST ANYMORE");
                         }
-
-                        int percentage = (int) 100.0 * model.getPrice_diff() / curr_price;
-                        System.out.println("%: " + model.getPrice_diff() + "/" + curr_price + "=" + percentage);
-                        String t = "0";
-
-                        if(model.getPrice_diff() > 0)
-                            t = "(+" + percentage + "%)";
-                        else if (model.getPrice_diff() < 0)
-                            t = "(" + percentage + "%)";
-                        else
-                            t = "000";
-
-                        Log.e(TAG, t);
-
-                        holder.setAll(model.getBrand(), model.getName(), final_price, t, website);
-                        holder.setImage(model.getUrl());
 
 
                         //Log.e(TAG, model.getPrice());
                     } catch (IOException e) {
+                        System.out.println("PRODUCT DOES NOT EXIST ANYMORE");
+                        mDatabase.child(uid).child(model.getBrand() + model.getName()).removeValue();
                         e.printStackTrace();
                     }
 

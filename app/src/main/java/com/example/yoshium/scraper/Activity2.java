@@ -69,6 +69,7 @@ public class Activity2 extends Activity {
                 Document doc = Jsoup.connect(website).get();
                 URL parseUrl = new URL(website);
 
+                String page_title;
                 Elements product_name;
                 Elements product_brand;
                 Elements product_price;
@@ -76,6 +77,7 @@ public class Activity2 extends Activity {
 
                 //SSENSE
                 if (parseUrl.getHost().equals("www.ssense.com")) {
+                    page_title = doc.title();
                     product_name = doc.getElementsByClass("product-name");
                     product_brand = doc.getElementsByClass("product-brand");
                     product_price = doc.getElementsByClass("product-price");
@@ -84,25 +86,38 @@ public class Activity2 extends Activity {
 
                     key = product_brand.text() + product_name.text();
 
-                    Product prod = new Product(product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
+                    Product prod = new Product(page_title, product_name.text(), product_brand.text(),product_price.text(), image_url, website, 0);
                     mDatabase.child(id).child(key).setValue(prod);
                     mEditText.getText().clear();
                 }
 
                 //GRAILED
                 if (parseUrl.getHost().equals("www.grailed.com")) {
+                    page_title = doc.title();
                     product_name = doc.getElementsByClass("listing-title sub-title");
                     product_brand = doc.getElementsByClass("designer jumbo");
-                    product_price = doc.getElementsByClass("sub-title price");
-                    String parsePrice = product_price.text().replaceAll("[,]", "");
+                    product_price = doc.getElementsByClass("-price");
+                    String parsePrice = product_price.text();
+                    System.out.println("PRODUCT PRICE " + product_price.text() );
+
+                    if (parsePrice.length() > 6){
+                        parsePrice = parsePrice.substring(0, parsePrice.indexOf(" "));
+                        System.out.println("PARSE PRICE " + parsePrice);
+                    }
+
+                    parsePrice = parsePrice.replaceAll("[,]", "");
+
+
                     imageElements = doc.getElementsByTag("img");
                     image_url = imageElements.get(0).attr("src");
                     System.out.println("IMAGEURL" + image_url);
 
                     key = product_brand.text() + product_name.text();
 
-                    Product prod = new Product(product_name.text(), product_brand.text(),(parsePrice + " USD"), image_url, website, 0);
+                    Product prod = new Product(page_title, product_name.text(), product_brand.text(),(parsePrice + " USD"), image_url, website, 0);
+                    System.out.println("prod made");
                     mDatabase.child(id).child(key).setValue(prod);
+                    System.out.println(key + " posted to database.");
                     mEditText.getText().clear();
                 }
 

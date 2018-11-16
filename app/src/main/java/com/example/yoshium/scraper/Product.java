@@ -17,6 +17,16 @@ public class Product {
     public String price;
     public String image_url;
     public String link;
+
+    public String getPage_title() {
+        return page_title;
+    }
+
+    public void setPage_title(String page_title) {
+        this.page_title = page_title;
+    }
+
+    public String page_title;
     public int price_diff;
 
 
@@ -26,7 +36,8 @@ public class Product {
 
 
 
-    public Product(String name, String brand, String price, String image_url, String link, int price_diff){
+    public Product(String page_title, String name, String brand, String price, String image_url, String link, int price_diff){
+        this.page_title = page_title;
         this.name = name;
         this.brand = brand;
         this.price = price;
