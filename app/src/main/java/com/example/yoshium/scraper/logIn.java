@@ -54,7 +54,7 @@ public class logIn extends Activity {
         mPasswordField = (EditText) findViewById(R.id.loginPass);
 
         mImageView = (ImageView) findViewById(R.id.stealSeekers);
-        mImageView.setImageResource(R.drawable.stealseekers);
+        mImageView.setImageResource(R.drawable.logo_white);
         registerBtn = findViewById(R.id.registerButton);
         auth = FirebaseAuth.getInstance();
 
@@ -110,7 +110,7 @@ public class logIn extends Activity {
                             // Sign in success, update UI with the signed-in user's information
 
                             FirebaseUser user = auth.getCurrentUser();
-                            Toast.makeText(getApplicationContext(), "it works", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Welcome to Steal Seekers!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         } else {
@@ -135,6 +135,20 @@ public class logIn extends Activity {
             Log.w("login", "signInResult:failed code=" + e.getStatusCode());
 
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null){
+            Intent intent = new Intent(logIn.this, MainActivity.class);
+            String id = currentUser.getUid();
+            intent.putExtra("ID", id);
+            startActivity(intent);
+        }
+       // System.out.println("USER ID " + currentUser.getUid());
     }
 
     public void completeLogin(View view){
@@ -166,5 +180,11 @@ public class logIn extends Activity {
         } else {
             Toast.makeText(logIn.this, "Please input your email or password!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        return;
     }
 }

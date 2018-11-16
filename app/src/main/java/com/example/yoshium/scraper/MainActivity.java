@@ -14,28 +14,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -44,17 +40,15 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-
-import static java.lang.StrictMath.abs;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private ListView mList;
     private ProductHolder productHolder;
     FirebaseRecyclerAdapter adapter;
     private FirebaseAuth mAuth;
+    private ImageButton mButton;
 
     Connection.Response response = null;
 
@@ -62,16 +56,20 @@ public class MainActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+
+        mButton = (ImageButton) findViewById(R.id.button1);
+        mButton.setVisibility(View.GONE);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             uid = user.getUid();
             System.out.println("USERID" + uid);
         }
-
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -92,6 +90,7 @@ public class MainActivity extends Activity {
                         .build();
 
         FirebaseRecyclerAdapter<Product, ProductHolder> adapter = new FirebaseRecyclerAdapter<Product, ProductHolder>(options) {
+
             private static final String TAG = "MyActivity";
 
             @NonNull
@@ -99,7 +98,7 @@ public class MainActivity extends Activity {
             public ProductHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 View view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.view_item, viewGroup, false);
-
+                mButton.setVisibility(View.VISIBLE);
                 return new ProductHolder(view);
             }
 
@@ -175,10 +174,8 @@ public class MainActivity extends Activity {
                                     final_price = "$" + curr_price + " USD";
                                 }
                                 Product prod = new Product(model.getPage_title(), model.getName(), model.getBrand(), final_price, model.getUrl(), model.getLink(), diff);
-                                //System.out.println("GOOGID" + googId);
                                 mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
                             } else {
-                                //System.out.println("GOOGID" + googId);
                                 if (parseUrl.getHost().equals("www.ssense.com")) {
                                     final_price = "$" + curr_price + " CAD";
                                 }
@@ -207,9 +204,11 @@ public class MainActivity extends Activity {
                         }
 
 
-                        //Log.e(TAG, model.getPrice());
+                        //mButton.setVisibility(View.VISIBLE);
                     } catch (IOException e) {
-                        System.out.println("PRODUCT DOES NOT EXIST ANYMORE");
+                        //System.out.println("PRODUCT DOES NOT EXIST ANYMORE");
+                        String noStockMsg = "Sorry but " + model.getName() + " from " + model.getBrand() + "is no longer available.";
+                        Toast.makeText(MainActivity.this, noStockMsg, Toast.LENGTH_LONG).show();
                         mDatabase.child(uid).child(model.getBrand() + model.getName()).removeValue();
                         e.printStackTrace();
                     }
@@ -222,8 +221,11 @@ public class MainActivity extends Activity {
 
 
         };
+
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+        mButton.setVisibility(View.VISIBLE);
+
 
 
 
@@ -234,6 +236,26 @@ public class MainActivity extends Activity {
 //        super.onStart();
 //
 //    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.signOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, logIn.class);
+                startActivity(intent);
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void sendMessage(View view)
     {

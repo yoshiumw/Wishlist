@@ -6,25 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
+
+    <include layout="@layout/toolbar"
+        android:id = "@+id/toolbar"/>
+
+    <ImageButton
         android:id="@+id/button1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/circle_button"
+        android:elevation="30dp"
         android:onClick="sendMessage"
-        android:text="Add Item" />
+        android:textColor="#ffffff "
+        android:src="@drawable/ic_add_black_24dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/button1"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="5dp"
         android:background="#ffffff " />
 
 </RelativeLayout>
