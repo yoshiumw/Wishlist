@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/seekerGreen"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/dialog_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/dialong_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Product Brand"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/view_in_browser_btn"
+            android:drawableLeft="@drawable/open_in_browser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:text="View in Browser"/>
+
+        <Button
+            android:id="@+id/delete_btn"
+            android:drawableLeft="@drawable/ic_delete_black_24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:text="Delete"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

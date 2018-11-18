@@ -13,23 +13,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
-import com.google.type.Color;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 public class ProductHolder extends RecyclerView.ViewHolder {
-    private final TextView brand;
-    private final TextView name;
-    private final TextView price;
-    private final ImageView image;
-    private final TextView diff;
-    private final TextView link;
+    public final TextView brand;
+    public final TextView name;
+    public final TextView price;
+    public final ImageView image;
+    public final TextView diff;
+    public final TextView link;
     RelativeLayout parentLayout;
 
     public ProductHolder(@NonNull View itemView) {
@@ -42,16 +34,10 @@ public class ProductHolder extends RecyclerView.ViewHolder {
         link = (TextView) itemView.findViewById(R.id.text_link);
         parentLayout = itemView.findViewById(R.id.parentLayout);
 
-        parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("Test","Item clicked : " + link.getText());
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse((String) link.getText()));
-                v.getContext().startActivity(intent);
-            }
-        });
+
     }
+
+
 
     public void setAll(String b, String n, String p, String d, String l){
         brand.setText(b);

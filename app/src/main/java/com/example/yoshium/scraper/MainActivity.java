@@ -1,8 +1,11 @@
 package com.example.yoshium.scraper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.appwidget.AppWidgetHost;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -20,8 +23,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -98,14 +103,57 @@ public class MainActivity extends AppCompatActivity {
             public ProductHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 View view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.view_item, viewGroup, false);
+
                 mButton.setVisibility(View.VISIBLE);
+
                 return new ProductHolder(view);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ProductHolder holder, int position, @NonNull Product model) {
+            protected void onBindViewHolder(@NonNull final ProductHolder holder, int position, @NonNull Product model) {
 
+                //SET ONCLICK TO CREATE DIALOG
+                final Dialog myDialog = new Dialog(MainActivity.this);
+                myDialog.setContentView(R.layout.dialog_content);
+                final String test_name = model.getName();
+                final String test_brand = model.getBrand();
 
+                holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        TextView dialog_name = (TextView) myDialog.findViewById(R.id.dialog_name);
+                        TextView dialog_brand = (TextView) myDialog.findViewById(R.id.dialong_brand);
+                        Button view_browser = (Button) myDialog.findViewById(R.id.view_in_browser_btn);
+                        Button del = (Button) myDialog.findViewById(R.id.delete_btn);
+
+                        view_browser.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse((String) holder.link.getText()));
+                                v.getContext().startActivity(intent);
+                                myDialog.dismiss();
+                            }
+                        });
+
+                        del.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String delete_message = test_brand + " " + test_name + " has been deleted from the database.";
+                                Toast.makeText(MainActivity.this, delete_message, Toast.LENGTH_LONG).show();
+                                mDatabase.child(uid).child(test_brand + test_name).removeValue();
+                                myDialog.dismiss();
+                            }
+                        });
+
+                        dialog_name.setText(test_name);
+                        dialog_brand.setText(test_brand);
+                        myDialog.show();
+                    }
+                });
+
+                //SCRAPE THE SITE AGAIN AND LOOK FOR PRICE CHANGES
                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
                 if (SDK_INT > 8)
                 {
@@ -233,12 +281,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -254,26 +296,24 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(MainActivity.this, logIn.class);
                 startActivity(intent);
-
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void sendMessage(View view)
     {
-
         Intent intent = new Intent(MainActivity.this, Activity2.class);
         intent.putExtra("ID", uid);
         startActivity(intent);
-
-
-
     }
+
     @Override
     public void onBackPressed() {
 
         return;
     }
+
+
 }
 
 
