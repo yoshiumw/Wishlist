@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
@@ -18,7 +18,10 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:ellipsize="end"
+            android:maxEms="10"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/dialong_brand"
