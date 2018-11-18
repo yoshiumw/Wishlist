@@ -35,6 +35,7 @@
 
         <Button
             android:id="@+id/view_in_browser_btn"
+            android:paddingLeft="10dp"
             android:drawableLeft="@drawable/open_in_browser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
 
         <Button
             android:id="@+id/delete_btn"
+            android:paddingLeft="10dp"
             android:drawableLeft="@drawable/ic_delete_black_24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
