@@ -3,27 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
 
     <include layout="@layout/toolbar"
         android:id = "@+id/toolbar"/>
 
-    <ImageButton
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/circle_button"
-        android:elevation="30dp"
-        android:onClick="sendMessage"
-        android:textColor="#ffffff "
-        android:src="@drawable/ic_add_black_24dp"
-        android:layout_marginRight="10dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -35,6 +21,52 @@
         android:layout_marginTop="5dp"
         android:background="#ffffff "
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp" />
+        android:layout_marginLeft="0dp"> </android.support.v7.widget.RecyclerView>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/floatingactiomenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:menu_colorNormal="@color/seekerGreen"
+        app:menu_colorPressed="@color/seekerGreen"
+        app:menu_colorRipple="@color/seekerGreen"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_labels_textColor="#212121"
+        app:menu_labels_colorNormal="#FAFAFA">
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_label="Enter By URL"
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/seekerGreen"
+            app:fab_colorPressed="@color/seekerGreen"
+            app:fab_colorRipple="@color/seekerGreen"
+            android:id="@+id/floatingActionLink"
+            android:src="@drawable/link"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_label="Search Item"
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/seekerGreen"
+            app:fab_colorPressed="@color/seekerGreen"
+            app:fab_colorRipple="@color/seekerGreen"
+            android:id="@+id/floatingActionSearch"
+            android:src="@drawable/search"/>
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+
+
+
+
 
 </RelativeLayout>

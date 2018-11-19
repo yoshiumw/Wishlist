@@ -5,4 +5,8 @@
     <string name="loginBtn">Log-in</string>
     <string name="registerBtn">Don\'t have an account? Register!</string>
     <string name="orTextView">--------------------          OR          --------------------</string>
+    <string name="paste_url_below">Paste URL Below:</string>
+    <string name="haven">Haven</string>
+    <string name="ssense">SSENSE</string>
+    <string name="google">Google</string>
 </resources>

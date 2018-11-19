@@ -1,36 +1,27 @@
 package com.example.yoshium.scraper;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
+
 
 public class Activity2 extends Activity {
 
@@ -39,16 +30,27 @@ public class Activity2 extends Activity {
     private String key;
     private String image_url;
     private String id;
+    ImageButton mImageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_2);
+
         mEditText = findViewById(R.id.edit_text);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         id = getIntent().getStringExtra("ID");
+
+        mImageButton = (ImageButton) findViewById(R.id.back_btn);
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity2.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void save(View v){

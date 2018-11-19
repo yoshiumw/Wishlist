@@ -1,19 +1,15 @@
 package com.example.yoshium.scraper;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import io.opencensus.internal.StringUtil;
 
 public class ProductHolder extends RecyclerView.ViewHolder {
     public final TextView brand;
