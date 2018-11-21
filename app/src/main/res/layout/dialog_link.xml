@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/search_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter Query"
+        android:paddingLeft="25dp"
+        android:textColor="@android:color/white"
+        android:background="@color/seekerGreen"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        />
+
+    <EditText
+        android:hint="Try 'Gucci Loafers'"
+        android:layout_below="@+id/search_title"
+        android:id="@+id/url_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/url_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/rounded_corners"
+        android:layout_below="@id/url_edit"
+        android:text="@string/ssense"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/seekerGreen"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp" />
+
+    <Button
+        android:id="@+id/haven_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:layout_below="@id/url_edit"
+        android:layout_toLeftOf="@id/url_button"
+        android:layout_toRightOf="@id/google_button"
+        android:text="@string/haven"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/seekerGreen"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@id/url_button" />
+
+    <Button
+        android:id="@+id/google_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners"
+        android:layout_below="@id/url_edit"
+        android:text="@string/google"
+        android:textColor="@color/seekerGreen"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignStart="@id/url_edit" />
+
+</RelativeLayout>
