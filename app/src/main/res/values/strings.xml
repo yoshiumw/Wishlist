@@ -9,4 +9,8 @@
     <string name="haven">Haven</string>
     <string name="ssense">SSENSE</string>
     <string name="google">Google</string>
+    <string name="try_gucci_loafers">Try \'Gucci Loafers\'</string>
+    <string name="enter_query">Enter Query</string>
+    <string name="currently_supported_sites_ssense_haven_and_grailed">Currently supported sites: SSENSE, Haven, and Grailed.</string>
+    <string name="submit">Submit</string>
 </resources>

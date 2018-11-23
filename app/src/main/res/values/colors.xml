@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="seekerGreen">#43a047</color>
+    <color name="red">#d50000</color>
 </resources>

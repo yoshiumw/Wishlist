@@ -3,72 +3,74 @@
     android:layout_width="350dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/rounded_background"
     >
 
     <TextView
         android:id="@+id/search_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Query"
-        android:paddingLeft="25dp"
-        android:textColor="@android:color/white"
-        android:background="@color/seekerGreen"
+        android:text="@string/enter_query"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
         android:textSize="25sp"
         android:paddingTop="30dp"
-        android:paddingBottom="30dp"
         />
 
     <EditText
-        android:hint="Try 'Gucci Loafers'"
+        android:hint="@string/try_gucci_loafers"
         android:layout_below="@+id/search_title"
         android:id="@+id/url_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"/>
 
-    <Button
-        android:id="@+id/url_button"
-        android:layout_width="wrap_content"
+    <LinearLayout android:id="@+id/LinearLayout01"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/rounded_corners"
-        android:layout_below="@id/url_edit"
-        android:text="@string/ssense"
-        android:layout_marginRight="30dp"
-        android:textColor="@color/seekerGreen"
-        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp" />
+        android:gravity="center"
+        android:layout_below="@id/url_edit">
 
-    <Button
-        android:id="@+id/haven_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners"
-        android:layout_below="@id/url_edit"
-        android:layout_toLeftOf="@id/url_button"
-        android:layout_toRightOf="@id/google_button"
-        android:text="@string/haven"
-        android:layout_marginRight="20dp"
-        android:textColor="@color/seekerGreen"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_toStartOf="@id/url_button" />
+        <Button
+            android:id="@+id/url_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_rounded_corners"
+            android:text="@string/ssense"
+            android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/google_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corners"
-        android:layout_below="@id/url_edit"
-        android:text="@string/google"
-        android:textColor="@color/seekerGreen"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_alignStart="@id/url_edit" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <Button
+            android:id="@+id/haven_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_rounded_corners"
+            android:text="@string/haven"
+            android:textColor="@android:color/white" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <Button
+            android:id="@+id/google_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_rounded_corners"
+            android:text="@string/google"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </RelativeLayout>

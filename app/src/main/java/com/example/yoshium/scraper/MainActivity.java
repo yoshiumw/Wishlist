@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.appwidget.AppWidgetHost;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         fab_search = (FloatingActionButton) findViewById(R.id.floatingActionSearch);
 
         final Dialog fabDialog = new Dialog(MainActivity.this);
+        fabDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         fabDialog.setContentView(R.layout.dialog_link);
 
         //Onclick listener for link fab.
@@ -196,7 +199,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //Init Dialog
                 final Dialog myDialog = new Dialog(MainActivity.this);
+                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myDialog.setContentView(R.layout.dialog_content);
+
                 final String test_name = model.getName();
                 final String test_brand = model.getBrand();
 
@@ -266,11 +271,24 @@ public class MainActivity extends AppCompatActivity {
                         int curr_price = 0;
                         int prev_price = 0;
 
-                        if (doc.title().equals(model.getPage_title())) {
+                        if ((doc.title().replaceAll("&", "and")).equals(model.getPage_title())) {
                             //SSENSE: Parse the price
                             if (parseUrl.getHost().equals("www.ssense.com")) {
                                 Elements product_price = doc.getElementsByClass("product-price");
-                                curr_price = Integer.parseInt(product_price.text().substring(1, product_price.text().indexOf(" "))); //Price from scraping
+                                String parse_price = product_price.text();
+                                if (parse_price.length() > 10 ) {
+                                    parse_price = parse_price.substring(parse_price.indexOf(" ") + 5, parse_price.lastIndexOf(" ") + 4);
+                                    System.out.println("PARSE PRICE " + parse_price);
+                                }
+                                curr_price = Integer.parseInt(parse_price.substring(1, parse_price.indexOf(" "))); //Price from scraping
+                                prev_price = Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
+                            }
+
+                            //HAVEN
+                            if (parseUrl.getHost().equals("shop.havenshop.com")) {
+                                Elements product_price = doc.getElementsByClass("price");
+                                curr_price = Integer.parseInt((product_price.text().substring(1, product_price.text().indexOf("."))).replaceAll(",", "")); //Price from scraping
+                                System.out.println("curr_price" + curr_price);
                                 prev_price = Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
                             }
 
@@ -285,7 +303,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 parsePrice = parsePrice.replaceAll("[,]", "");
-
                                 curr_price = Integer.parseInt(parsePrice.substring(1, parsePrice.length())); //Price from scraping
                                 prev_price = Integer.parseInt(model.getPrice().substring(1, model.getPrice().indexOf(" "))); //Price from db
                             }
@@ -293,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                             int diff = prev_price - curr_price;
                             if (curr_price < prev_price) {
                                 System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
-                                if (parseUrl.getHost().equals("www.ssense.com")) {
+                                if (parseUrl.getHost().equals("www.ssense.com") || parseUrl.getHost().equals("shop.havenshop.com")) {
                                     final_price = "$" + curr_price + " CAD";
                                 }
                                 if (parseUrl.getHost().equals("www.grailed.com")) {
@@ -304,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
 
                             } else if (curr_price > prev_price) {
                                 System.out.println("diff = " + curr_price + "-" + prev_price + "=" + diff);
-                                if (parseUrl.getHost().equals("www.ssense.com")) {
+                                if (parseUrl.getHost().equals("www.ssense.com") || parseUrl.getHost().equals("shop.havenshop.com")) {
                                     final_price = "$" + curr_price + " CAD";
                                 }
                                 if (parseUrl.getHost().equals("www.grailed.com")) {
@@ -313,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
                                 Product prod = new Product(model.getPage_title(), model.getName(), model.getBrand(), final_price, model.getUrl(), model.getLink(), diff);
                                 mDatabase.child(uid).child(model.getBrand() + model.getName()).setValue(prod);
                             } else {
-                                if (parseUrl.getHost().equals("www.ssense.com")) {
+                                if (parseUrl.getHost().equals("www.ssense.com") || parseUrl.getHost().equals("shop.havenshop.com")) {
                                     final_price = "$" + curr_price + " CAD";
                                 }
                                 if (parseUrl.getHost().equals("www.grailed.com")) {
@@ -332,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
                             else
                                 t = "000";
 
+                            System.out.println("Model get Brand " + model.getBrand() + model.getName());
                             holder.setAll(model.getBrand(), model.getName(), final_price, t, website);
                             holder.setImage(model.getUrl());
                         }

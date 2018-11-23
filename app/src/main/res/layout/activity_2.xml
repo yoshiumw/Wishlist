@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,23 +9,24 @@
     <TextView
         android:id="@+id/url_textview"
         android:text="@string/paste_url_below"
+        android:textColor="@android:color/black"
         android:layout_above="@id/edit_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:textSize="30dp"
-        />
+        android:textSize="30sp"
+        android:layout_marginStart="15dp" />
 
     <TextView
         android:id="@+id/sites_supported"
-        android:text="Currently supported sites: SSENSE, Haven, and Grailed."
+        android:text="@string/currently_supported_sites_ssense_haven_and_grailed"
         android:layout_below="@id/edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#BDBDBD"
         android:layout_marginLeft="15dp"
-        android:textSize="15dp"
-        />
+        android:textSize="14sp"
+        android:layout_marginStart="15dp" />
 
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_marginLeft="10dp"
         android:background="@android:color/transparent"
         android:src="@drawable/back_arrow"
-        />
+        android:layout_marginStart="10dp" />
 
 
     <EditText
@@ -54,7 +54,8 @@
         android:layout_height = "wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp" />
 
 
     <Button
@@ -63,15 +64,16 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:background="@drawable/green_rounded_corners"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:padding="15dp"
         android:layout_below="@id/sites_supported"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
         android:onClick="save"
-        android:text="Submit"
-        android:layout_alignParentRight="true" />
+        android:text="@string/submit"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="15dp" />
 
 
 
