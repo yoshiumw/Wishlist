@@ -6,6 +6,9 @@
 Steal Seekers is an Android application that allows users to follow items sold on online fashion retailers and track price changes during
 the winter sale season.
 
+## Demo
+[![Video Thumbnail](https://github.com/yoshiumw/Wishlist/blob/master/SS2.PNG?raw=true "demo")](https://youtu.be/VkadmIVAiBo)
+
 ## Installation
 - Clone the repository
 - Download and install Android Studio and Gradle 4.0
